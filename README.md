@@ -8,14 +8,32 @@ Find the original repository [here](https://github.com/shariqfarooq123/AdaBins)
 -   Make sure you have CUDA **10.1** installed.
 -   Make sure you have `conda` installed.
 
+## Preparation
+
+```
+### Replace with your directory of choice
+export ADABINS_WORKSPACE=~
+$ cd $ADABINS_WORKSPACE
+### Make a folder for datasets
+$ mkdir dataset
+### Clone this repo
+$ git clone https://github.com/ncsereoka/AdaBins.git
+```
+
 ## Data
 
--   [NYU Depth V2 (50K)](https://tinyurl.com/nyu-data-zip) (4.1GB), from Alhashim's [DenseDepth](https://github.com/ialhashim/DenseDepth) repository.
-    -   Download the zip file into the working directory.
-    -   After the download finished, execute `unzip nyu_data.zip`. This will create the `data` folder for you.
-    -   The training dataloader will fetch the filenames from the text files in the `train_test_inputs` folder, namely `nyudepthv2_train_files_with_gt.txt` and `nyudepthv2_test_files_with_gt.txt`.
-    -   The originals have been edited to match the folder structure of the previously mentioned `data`.
-    -   You now have the data! Onto the enironment setup.
+-   Don't use the dataset from DenseDepth! Details [here](https://github.com/shariqfarooq123/AdaBins/issues/54#issuecomment-1014929303).
+-   Use the instructions from the [BTS repository](https://github.com/cleinc/bts/):
+
+```
+$ cd $ADABINS_WORKSPACE/AdaBins/utils
+### Get official NYU Depth V2 split file
+$ wget http://horatio.cs.nyu.edu/mit/silberman/nyu_depth_v2/nyu_depth_v2_labeled.mat
+### Convert mat file to image files
+$ python extract_official_train_test_set_from_mat.py nyu_depth_v2_labeled.mat splits.mat ../../dataset/nyu_depth_v2/official_splits/
+```
+
+-   You now have the data! Onto the enironment setup.
 
 ## Environment
 
