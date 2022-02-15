@@ -1,68 +1,56 @@
-# AdaBins
-[![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/adabins-depth-estimation-using-adaptive-bins/monocular-depth-estimation-on-kitti-eigen)](https://paperswithcode.com/sota/monocular-depth-estimation-on-kitti-eigen?p=adabins-depth-estimation-using-adaptive-bins) [![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/adabins-depth-estimation-using-adaptive-bins/monocular-depth-estimation-on-nyu-depth-v2)](https://paperswithcode.com/sota/monocular-depth-estimation-on-nyu-depth-v2?p=adabins-depth-estimation-using-adaptive-bins)
+# Fork of original AdaBins repository
 
-Official implementation of [Adabins: Depth Estimation using adaptive bins](https://arxiv.org/abs/2011.14141)
-## Download links
-* You can download the pretrained models "AdaBins_nyu.pt" and "AdaBins_kitti.pt" from [here](https://drive.google.com/drive/folders/1nYyaQXOBjNdUJDsmJpcRpu6oE55aQoLA?usp=sharing)
-* You can download the predicted depths in 16-bit format for NYU-Depth-v2 official test set and KITTI Eigen split test set [here](https://drive.google.com/drive/folders/1b3nfm8lqrvUjtYGmsqA5gptNQ8vPlzzS?usp=sharing)
+Find the original repository [here](https://github.com/shariqfarooq123/AdaBins)
 
-## Colab demo 
+## Prerequisites
 
-<p>
-<a href="https://colab.research.google.com/drive/1oxHflMh6eAJS7BhvP1amHvuBSirlS5Vl?usp=sharing" target="_parent">
-  <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/>
-</a>
-</p>
+-   Make sure you have a CUDA-capable GPU (I've used an RTX 2060 on a laptop).
+-   Make sure you have CUDA **10.1** installed.
+-   Make sure you have `conda` installed.
 
-## Inference
-Move the downloaded weights to a directory of your choice (we will use "./pretrained/" here). You can then use the pretrained models like so:
+## Data
 
-```python
-from models import UnetAdaptiveBins
-import model_io
-from PIL import Image
+-   [NYU Depth V2 (50K)](https://tinyurl.com/nyu-data-zip) (4.1GB), from Alhashim's [DenseDepth](https://github.com/ialhashim/DenseDepth) repository.
+    -   Download the zip file into the working directory.
+    -   After the download finished, execute `unzip nyu_data.zip`. This will create the `data` folder for you.
+    -   The training dataloader will fetch the filenames from the text files in the `train_test_inputs` folder, namely `nyudepthv2_train_files_with_gt.txt` and `nyudepthv2_test_files_with_gt.txt`.
+    -   The originals have been edited to match the folder structure of the previously mentioned `data`.
+    -   You now have the data! Onto the enironment setup.
 
-MIN_DEPTH = 1e-3
-MAX_DEPTH_NYU = 10
-MAX_DEPTH_KITTI = 80
+## Environment
 
-N_BINS = 256 
+-   I've trained on an Arch Linux, so your environment might be slightly different.
+-   Create a new Conda environment: `conda create -n adabins python=3.7` (using 3.7 but 3.8 works as well)
+-   Activate the new environment `conda activate adabins`
+-   Install packages using **pip** (had several issues with `conda install` so stuck with `pip`):
+-   `pip install pytorch3d` (most annoying)
+-   `pip install wandb`
+-   `pip install matplotlib`
+-   `pip install scipy`
+-   At this point, when running the train command, you might run into the following issue:
+    -   `ImportError: .../.conda/envs/adabins/lib/python3.7/site-packages/pytorch3d/_C.cpython-37m-x86_64-linux-gnu.so: undefined symbol: _ZNK2at6Tensor7is_cudaEv`
+    -   To fix this, uninstall `torch` and `torchvision`
+    -   i.e. `pip uninstall torch torchvision`
+    -   Run the command from [here](https://github.com/facebookresearch/maskrcnn-benchmark/issues/891#issuecomment-812496907)
+    -   i.e. `pip install torch==1.6.0+cu101 torchvision==0.7.0+cu101 -f https://download.pytorch.org/whl/torch_stable.html`
+    -   The import error should be no more.
+-   Set up **wandb**:
+    -   Either execute `wandb offline`
+    -   Or: sign up on https://wandb.com,
+    -   Go to your profile and copy your API token.
+    -   Execute `wandb login`. Paste in your API token.
+-   Your environment should be set up.
 
-# NYU
-model = UnetAdaptiveBins.build(n_bins=N_BINS, min_val=MIN_DEPTH, max_val=MAX_DEPTH_NYU)
-pretrained_path = "./pretrained/AdaBins_nyu.pt"
-model, _, _ = model_io.load_checkpoint(pretrained_path, model)
+## Actual training
 
-bin_edges, predicted_depth = model(example_rgb_batch)
+-   Start training by executing `python train.py args_train_nyu.txt` from the main directory.
 
-# KITTI
-model = UnetAdaptiveBins.build(n_bins=N_BINS, min_val=MIN_DEPTH, max_val=MAX_DEPTH_KITTI)
-pretrained_path = "./pretrained/AdaBins_kitti.pt"
-model, _, _ = model_io.load_checkpoint(pretrained_path, model)
+## Other ssues you might encounter
 
-bin_edges, predicted_depth = model(example_rgb_batch)
-```
-Note that the model returns bin-edges (instead of bin-centers).
-
-**Recommended way:** `InferenceHelper` class in `infer.py` provides an easy interface for inference and handles various types of inputs (with any prepocessing required). It uses Test-Time-Augmentation (H-Flips) and also calculates bin-centers for you:
-```python
-from infer import InferenceHelper
-
-infer_helper = InferenceHelper(dataset='nyu')
-
-# predict depth of a batched rgb tensor
-example_rgb_batch = ...  
-bin_centers, predicted_depth = infer_helper.predict(example_rgb_batch)
-
-# predict depth of a single pillow image
-img = Image.open("test_imgs/classroom__rgb_00283.jpg")  # any rgb pillow image
-bin_centers, predicted_depth = infer_helper.predict_pil(img)
-
-# predict depths of images stored in a directory and store the predictions in 16-bit format in a given separate dir
-infer_helper.predict_dir("/path/to/input/dir/containing_only_images/", "path/to/output/dir/")
-
-```
-## TODO:
-* Add instructions for Evaluation and Training.
-* Add UI demo
-* Remove unnecessary dependencies
+-   Missing libraries (e.g. **libcudart**):
+    -   Make sure you link them:
+    -   `sudo ln -s /opt/cuda/targets/x86_64-linux/lib/libcudart.so.10.1 /usr/lib/libcudart.so.10.1`
+-   Training stuck at 0%
+    -   Double-check the text files which contain the filenames of the images. Some images might be missing (shouldn't happen with the steps from above).
+-   GPU out of memory
+    -   Reduce the batch size (I've reduced to the lowest batch size for it to fit my 6GB of GPU memory).

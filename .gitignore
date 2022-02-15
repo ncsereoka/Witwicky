@@ -7,4 +7,5 @@ predictions_kitti/
 wandb/
 checkpoints/
 pretrained/
+.ipynb_checkpoints/
 
