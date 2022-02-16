@@ -60,7 +60,7 @@ $ python extract_official_train_test_set_from_mat.py nyu_depth_v2_labeled.mat sp
 ```
 
 -   However, we still need the training data. You'll find it using [this comment](https://github.com/cleinc/bts/issues/4#issuecomment-527120927).
--   To make it even clearer: use [this Google Drive link](https://drive.google.com/uc?id=1AysroWpfISmm-yRFGBgFTrLy6FjQwvwP&export=download) and download `sync.zip` into `$ADABINS_WORKSPACE/dataset`. After unzipping, you should have the `sync` folder, just like in Bhat's inputs' text file (`../dataset/nyu_depth_v2/sync/`).
+-   To make it even clearer: use [this Google Drive link](https://drive.google.com/uc?id=1AysroWpfISmm-yRFGBgFTrLy6FjQwvwP&export=download) and download `sync.zip` into `$ADABINS_WORKSPACE/dataset/nyu_depth_v2`. After unzipping, you should have the `sync` folder, just like in Bhat's inputs' text file (`../dataset/nyu_depth_v2/sync/`).
 
 -   You now have the data! Onto the actual training.
 
