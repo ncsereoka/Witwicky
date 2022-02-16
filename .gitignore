@@ -8,4 +8,4 @@ wandb/
 checkpoints/
 pretrained/
 .ipynb_checkpoints/
-
+utils/nyu_depth_v2_labeled.mat

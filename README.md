@@ -20,21 +20,6 @@ $ mkdir dataset
 $ git clone https://github.com/ncsereoka/AdaBins.git
 ```
 
-## Data
-
--   Don't use the dataset from DenseDepth! Details [here](https://github.com/shariqfarooq123/AdaBins/issues/54#issuecomment-1014929303).
--   Use the instructions from the [BTS repository](https://github.com/cleinc/bts/):
-
-```
-$ cd $ADABINS_WORKSPACE/AdaBins/utils
-### Get official NYU Depth V2 split file
-$ wget http://horatio.cs.nyu.edu/mit/silberman/nyu_depth_v2/nyu_depth_v2_labeled.mat
-### Convert mat file to image files
-$ python extract_official_train_test_set_from_mat.py nyu_depth_v2_labeled.mat splits.mat ../../dataset/nyu_depth_v2/official_splits/
-```
-
--   You now have the data! Onto the enironment setup.
-
 ## Environment
 
 -   I've trained on an Arch Linux, so your environment might be slightly different.
@@ -57,7 +42,27 @@ $ python extract_official_train_test_set_from_mat.py nyu_depth_v2_labeled.mat sp
     -   Or: sign up on https://wandb.com,
     -   Go to your profile and copy your API token.
     -   Execute `wandb login`. Paste in your API token.
--   Your environment should be set up.
+-   You'll need this in the data step: `pip install h5py opencv-python`
+-   Your environment should be set up. Onto the data!
+
+## Data
+
+-   Don't use the dataset from DenseDepth! Details [here](https://github.com/shariqfarooq123/AdaBins/issues/54#issuecomment-1014929303).
+-   Use the instructions from the [BTS repository](https://github.com/cleinc/bts/).
+-   These commands will set you up with the test files
+
+```
+$ cd $ADABINS_WORKSPACE/AdaBins/utils
+### Get official NYU Depth V2 split file
+$ wget http://horatio.cs.nyu.edu/mit/silberman/nyu_depth_v2/nyu_depth_v2_labeled.mat
+### Convert mat file to image files
+$ python extract_official_train_test_set_from_mat.py nyu_depth_v2_labeled.mat splits.mat ../../dataset/nyu_depth_v2/official_splits/
+```
+
+-   However, we still need the training data. You'll find it using [this comment](https://github.com/cleinc/bts/issues/4#issuecomment-527120927).
+-   To make it even clearer: use [this Google Drive link](https://drive.google.com/uc?id=1AysroWpfISmm-yRFGBgFTrLy6FjQwvwP&export=download) and download `sync.zip` into `$ADABINS_WORKSPACE/dataset`. After unzipping, you should have the `sync` folder, just like in Bhat's inputs' text file (`../dataset/nyu_depth_v2/sync/`).
+
+-   You now have the data! Onto the actual training.
 
 ## Actual training
 
