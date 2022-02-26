@@ -1,6 +1,6 @@
-# Fork of original AdaBins repository
+# Comparison of Monocular Depth Estimation Algorithms
 
-Find the original repository [here](https://github.com/shariqfarooq123/AdaBins)
+Based on the original AdaBins repository from [here](https://github.com/shariqfarooq123/AdaBins)
 
 ## Prerequisites
 
