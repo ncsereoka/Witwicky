@@ -27,19 +27,16 @@ $ git clone https://github.com/ncsereoka/AdaBins.git
 -   Activate the new environment `conda activate adabins`
 -   Install packages using **pip** (had several issues with `conda install` so stuck with `pip`):
 -   `pip install pytorch3d` (most annoying)
--   `pip install wandb`
--   `pip install matplotlib`
--   `pip install scipy`
+-   `pip install wandb matplotlib scipy`
 -   At this point, when running the train command, you might run into the following issue:
     -   `ImportError: .../.conda/envs/adabins/lib/python3.7/site-packages/pytorch3d/_C.cpython-37m-x86_64-linux-gnu.so: undefined symbol: _ZNK2at6Tensor7is_cudaEv`
-    -   To fix this, uninstall `torch` and `torchvision`
-    -   i.e. `pip uninstall torch torchvision`
+    -   To fix this, uninstall `torch` and `torchvision` (`pip uninstall torch torchvision`).
     -   Run the command from [here](https://github.com/facebookresearch/maskrcnn-benchmark/issues/891#issuecomment-812496907)
     -   i.e. `pip install torch==1.6.0+cu101 torchvision==0.7.0+cu101 -f https://download.pytorch.org/whl/torch_stable.html`
     -   The import error should be no more.
 -   Set up **wandb**:
-    -   Either execute `wandb offline`
-    -   Or: sign up on https://wandb.com,
+    -   Either execute `wandb offline` - or:
+    -   Sign up on https://wandb.com,
     -   Go to your profile and copy your API token.
     -   Execute `wandb login`. Paste in your API token.
 -   You'll need this in the data step: `pip install h5py opencv-python`
@@ -68,7 +65,7 @@ $ python extract_official_train_test_set_from_mat.py nyu_depth_v2_labeled.mat sp
 
 -   Start training by executing `python train.py args_train_nyu.txt` from the main directory.
 
-## Other ssues you might encounter
+## Other issues you might encounter
 
 -   Missing libraries (e.g. **libcudart**):
     -   Make sure you link them:
