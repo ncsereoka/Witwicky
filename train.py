@@ -70,8 +70,12 @@ def main_worker(gpu, ngpus_per_node, args):
 
     ###################################### Load model ##############################################
 
-    model = models.UnetAdaptiveBins.build(n_bins=args.n_bins, min_val=args.min_depth, max_val=args.max_depth,
-                                          norm=args.norm)
+    if args.backend == 'standard':
+        model = models.UnetAdaptiveBins.build(n_bins=args.n_bins, min_val=args.min_depth, max_val=args.max_depth,
+                                              norm=args.norm)
+    elif args.backend == 'dpt':
+        print('DPT backend not ready yet! Use the standard one')
+        return
 
     ################################################################################################
 
@@ -361,6 +365,8 @@ if __name__ == '__main__':
     parser.add_argument('--eigen_crop', default=True, help='if set, crops according to Eigen NIPS14',
                         action='store_true')
     parser.add_argument('--garg_crop', help='if set, crops according to Garg  ECCV16', action='store_true')
+    parser.add_argument('--backend', default='standard', help='what to use before the AdaBins module',
+                        choices=['standard', 'dpt'])
 
     if sys.argv.__len__() == 2:
         arg_filename_with_prefix = '@' + sys.argv[1]

@@ -27,3 +27,4 @@
 --min_depth_eval 1e-3
 --max_depth_eval 10
 --eigen_crop
+--backend dpt
