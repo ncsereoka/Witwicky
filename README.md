@@ -13,18 +13,18 @@ I've trained on an Arch Linux with CUDA 11.6, so your environment might be sligh
 
 ```
 ### Replace with your directory of choice
-export ADABINS_WORKSPACE=~
-$ cd $ADABINS_WORKSPACE
+export WITWICKY_WORKSPACE=~
+$ cd $WITWICKY_WORKSPACE
 ### Make a folder for datasets
 $ mkdir dataset
 ### Clone this repo
-$ git clone https://github.com/ncsereoka/AdaBins.git
+$ git clone https://github.com/ncsereoka/Witwicky.git
 ```
 
 ## Environment
 
-- Create a new Conda environment: `conda create -n adabins python=3.8`
-- Activate the new environment `conda activate adabins`
+- Create a new Conda environment: `conda create -n witwicky python=3.8`
+- Activate the new environment `conda activate witwicky`
 - Install packages using **pip** (had several issues with `conda install` so stuck with `pip`):
 - Use the instructions from the official [PyTorch website](https://pytorch.org/) to install `torch` and others.
 - For me, this meant: `pip3 install torch==1.10.2+cu113 torchvision==0.11.3+cu113 torchaudio==0.10.2+cu113 -f https://download.pytorch.org/whl/cu113/torch_stable.html`
@@ -48,7 +48,7 @@ $ git clone https://github.com/ncsereoka/AdaBins.git
 -   These commands will set you up with the test files
 
 ```
-$ cd $ADABINS_WORKSPACE/AdaBins/utils
+$ cd $WITWICKY_WORKSPACE/Witwicky/utils
 ### Get official NYU Depth V2 split file
 $ wget http://horatio.cs.nyu.edu/mit/silberman/nyu_depth_v2/nyu_depth_v2_labeled.mat
 ### Convert mat file to image files
@@ -56,7 +56,7 @@ $ python extract_official_train_test_set_from_mat.py nyu_depth_v2_labeled.mat sp
 ```
 
 -   However, we still need the training data. You'll find it using [this comment](https://github.com/cleinc/bts/issues/4#issuecomment-527120927).
--   To make it even clearer: use [this Google Drive link](https://drive.google.com/uc?id=1AysroWpfISmm-yRFGBgFTrLy6FjQwvwP&export=download) and download `sync.zip` into `$ADABINS_WORKSPACE/dataset/nyu_depth_v2`. After unzipping, you should have the `sync` folder, just like in Bhat's inputs' text file (`../dataset/nyu_depth_v2/sync/`).
+-   To make it even clearer: use [this Google Drive link](https://drive.google.com/uc?id=1AysroWpfISmm-yRFGBgFTrLy6FjQwvwP&export=download) and download `sync.zip` into `$WITWICKY_WORKSPACE/dataset/nyu_depth_v2`. After unzipping, you should have the `sync` folder, just like in Bhat's inputs' text file (`../dataset/nyu_depth_v2/sync/`).
 
 -   You now have the data! Onto the actual training.
 
