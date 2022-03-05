@@ -4,8 +4,9 @@ Based on the original AdaBins repository from [here](https://github.com/shariqfa
 
 ## Prerequisites
 
+I've trained on an Arch Linux with CUDA 11.6, so your environment might be slightly different.
 -   Make sure you have a CUDA-capable GPU (I've used an RTX 2060 on a laptop).
--   Make sure you have CUDA **10.1** installed.
+-   Make sure you have CUDA installed.
 -   Make sure you have `conda` installed.
 
 ## Preparation
@@ -22,25 +23,23 @@ $ git clone https://github.com/ncsereoka/AdaBins.git
 
 ## Environment
 
--   I've trained on an Arch Linux, so your environment might be slightly different.
--   Create a new Conda environment: `conda create -n adabins python=3.7` (using 3.7 but 3.8 works as well)
--   Activate the new environment `conda activate adabins`
--   Install packages using **pip** (had several issues with `conda install` so stuck with `pip`):
--   `pip install pytorch3d` (most annoying)
--   `pip install wandb matplotlib scipy`
--   At this point, when running the train command, you might run into the following issue:
-    -   `ImportError: .../.conda/envs/adabins/lib/python3.7/site-packages/pytorch3d/_C.cpython-37m-x86_64-linux-gnu.so: undefined symbol: _ZNK2at6Tensor7is_cudaEv`
-    -   To fix this, uninstall `torch` and `torchvision` (`pip uninstall torch torchvision`).
-    -   Run the command from [here](https://github.com/facebookresearch/maskrcnn-benchmark/issues/891#issuecomment-812496907)
-    -   i.e. `pip install torch==1.6.0+cu101 torchvision==0.7.0+cu101 -f https://download.pytorch.org/whl/torch_stable.html`
-    -   The import error should be no more.
--   Set up **wandb**:
+- Create a new Conda environment: `conda create -n adabins python=3.8`
+- Activate the new environment `conda activate adabins`
+- Install packages using **pip** (had several issues with `conda install` so stuck with `pip`):
+- Use the instructions from the official [PyTorch website](https://pytorch.org/) to install `torch` and others.
+- For me, this meant: `pip3 install torch==1.10.2+cu113 torchvision==0.11.3+cu113 torchaudio==0.10.2+cu113 -f https://download.pytorch.org/whl/cu113/torch_stable.html`
+- We need to install `pytorch3d`:
+  - Follow instructions from [here](https://github.com/facebookresearch/pytorch3d/blob/main/INSTALL.md).
+  - For me:
+  - `pip install fvcore iopath`
+  - `pip install --no-index --no-cache-dir pytorch3d -f https://dl.fbaipublicfiles.com/pytorch3d/packaging/wheels/py38_cu113_pyt1102/download.html`
+- Install the remaining packages with: `pip install -r packages.txt`
+- Set up **wandb**:
     -   Either execute `wandb offline` - or:
     -   Sign up on https://wandb.com,
     -   Go to your profile and copy your API token.
-    -   Execute `wandb login`. Paste in your API token.
--   You'll need this in the data step: `pip install h5py opencv-python`
--   Your environment should be set up. Onto the data!
+    -   Execute `wandb login`. Paste in your API token
+- Your environment should be set up. Onto the data!
 
 ## Data
 
@@ -67,9 +66,6 @@ $ python extract_official_train_test_set_from_mat.py nyu_depth_v2_labeled.mat sp
 
 ## Other issues you might encounter
 
--   Missing libraries (e.g. **libcudart**):
-    -   Make sure you link them:
-    -   `sudo ln -s /opt/cuda/targets/x86_64-linux/lib/libcudart.so.10.1 /usr/lib/libcudart.so.10.1`
 -   Training stuck at 0%
     -   Double-check the text files which contain the filenames of the images. Some images might be missing (shouldn't happen with the steps from above).
 -   GPU out of memory

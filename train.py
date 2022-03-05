@@ -74,8 +74,7 @@ def main_worker(gpu, ngpus_per_node, args):
         model = models.UnetAdaptiveBins.build(n_bins=args.n_bins, min_val=args.min_depth, max_val=args.max_depth,
                                               norm=args.norm)
     elif args.backend == 'dpt':
-        print('DPT backend not ready yet! Use the standard one')
-        return
+        model = models.DptBins.build(n_bins=args.n_bins, min_val=args.min_depth, max_val=args.max_depth, norm=args.norm)
 
     ################################################################################################
 
