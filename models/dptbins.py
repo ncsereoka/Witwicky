@@ -48,10 +48,10 @@ class DptBins(nn.Module):
         return bin_edges, pred
 
     def get_1x_lr_params(self):  # lr/10 learning rate
-        return self.encoder.parameters()
+        return self.dpt_base.parameters()
 
     def get_10x_lr_params(self):  # lr learning rate
-        modules = [self.decoder, self.adaptive_bins_layer, self.conv_out]
+        modules = [self.adaptive_bins_layer, self.conv_out]
         for m in modules:
             yield from m.parameters()
 
