@@ -1,5 +1,6 @@
 import torch
 import torch.nn as nn
+import torchvision.transforms.functional as F
 
 from .dpt import DPTDepthModel
 from .miniViT import mViT
@@ -11,7 +12,8 @@ class DptBins(nn.Module):
         self.num_classes = n_bins
         self.min_val = min_val
         self.max_val = max_val
-        self.adaptive_bins_layer = mViT(128, n_query_channels=128, patch_size=16,
+        # Only one channel
+        self.adaptive_bins_layer = mViT(1, n_query_channels=128, patch_size=16,
                                         dim_out=n_bins,
                                         embedding_dim=128, norm=norm)
 
@@ -28,7 +30,9 @@ class DptBins(nn.Module):
 
     def forward(self, x, **kwargs):
         dpt_out = self.dpt_base(x, **kwargs)
-        bin_widths_normed, range_attention_maps = self.adaptive_bins_layer(dpt_out)
+        inter = F.resize(dpt_out, [208, 272])
+        mvit_in = inter[None, :]  # Add dummy dimension
+        bin_widths_normed, range_attention_maps = self.adaptive_bins_layer(mvit_in)
         out = self.conv_out(range_attention_maps)
 
         # Post process
