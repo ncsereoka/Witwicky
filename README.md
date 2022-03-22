@@ -62,7 +62,8 @@ $ python extract_official_train_test_set_from_mat.py nyu_depth_v2_labeled.mat sp
 
 ## Actual training
 
--   Start training by executing `python train.py args_train_nyu.txt` from the main directory.
+- Start training by executing `python train.py args_train_nyu_standard.txt` from the main directory.
+- Use `python train.py args_train_nyu_dpt.txt` to train with the DPT backend.
 
 ## Other issues you might encounter
 
