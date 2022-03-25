@@ -1,3 +1,4 @@
 from .unet_adaptive_bins import UnetAdaptiveBins
-from .dptbins import DptBins
-from .dpt.models import DPTDepthModel
+from .dptbinsthreefusion import DptBinsThreeFusion
+from .dptbinsoriginal import DptBinsOriginal
+from .dpt_three_fusion.models import DPTDepthModel

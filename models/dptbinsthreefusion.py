@@ -2,13 +2,13 @@ import torch
 import torch.nn as nn
 import torchvision.transforms.functional as F
 
-from .dpt import DPTDepthModel
+from .dpt_three_fusion import DPTDepthModel
 from .miniViT import mViT
 
 
-class DptBins(nn.Module):
+class DptBinsThreeFusion(nn.Module):
     def __init__(self, n_bins=100, min_val=0.1, max_val=10, norm='linear'):
-        super(DptBins, self).__init__()
+        super(DptBinsThreeFusion, self).__init__()
         self.num_classes = n_bins
         self.min_val = min_val
         self.max_val = max_val
@@ -68,7 +68,7 @@ class DptBins(nn.Module):
 
 
 if __name__ == '__main__':
-    model = DptBins.build(100)
+    model = DptBinsThreeFusion.build(100)
     x = torch.rand(2, 3, 480, 640)
     bins, pred = model(x)
     print(bins.shape, pred.shape)

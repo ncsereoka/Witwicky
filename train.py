@@ -73,8 +73,10 @@ def main_worker(gpu, ngpus_per_node, args):
     if args.backend == 'standard':
         model = models.UnetAdaptiveBins.build(n_bins=args.n_bins, min_val=args.min_depth, max_val=args.max_depth,
                                               norm=args.norm)
-    elif args.backend == 'dpt':
-        model = models.DptBins.build(n_bins=args.n_bins, min_val=args.min_depth, max_val=args.max_depth, norm=args.norm)
+    elif args.backend == 'dpt_original':
+        model = models.DptBinsOriginal.build(n_bins=args.n_bins, min_val=args.min_depth, max_val=args.max_depth, norm=args.norm)
+    elif args.backend == 'dpt_three_fusion':
+        model = models.DptBinsThreeFusion.build(n_bins=args.n_bins, min_val=args.min_depth, max_val=args.max_depth, norm=args.norm)
 
     ################################################################################################
 
@@ -365,7 +367,7 @@ if __name__ == '__main__':
                         action='store_true')
     parser.add_argument('--garg_crop', help='if set, crops according to Garg  ECCV16', action='store_true')
     parser.add_argument('--backend', default='standard', help='what to use before the AdaBins module',
-                        choices=['standard', 'dpt'])
+                        choices=['standard', 'dpt_three_fusion', 'dpt_original'])
 
     if sys.argv.__len__() == 2:
         arg_filename_with_prefix = '@' + sys.argv[1]
