@@ -29,9 +29,9 @@ class DptBins(nn.Module):
         )
 
     def forward(self, x, **kwargs):
-        dpt_out = self.dpt_base(x, **kwargs)
-        inter = F.resize(dpt_out, [208, 272])
-        mvit_in = inter[None, :]  # Add dummy dimension
+        inter = F.resize(x, [208, 272])
+        dpt_out = self.dpt_base(inter, **kwargs)
+        mvit_in = dpt_out[None, :]  # Add dummy dimension
         bin_widths_normed, range_attention_maps = self.adaptive_bins_layer(mvit_in)
         out = self.conv_out(range_attention_maps)
 
